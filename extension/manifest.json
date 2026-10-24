@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "AIP 真实监控采集器",
+  "version": "2.0.1",
+  "description": "使用已登录的 X 与抖音浏览器会话，采集公开内容并写回 AIP 监控台。",
+  "permissions": ["tabs", "alarms", "storage", "notifications", "scripting"],
+  "host_permissions": ["https://x.com/*", "https://www.douyin.com/*", "http://127.0.0.1:4173/*", "http://localhost:4173/*"],
+  "optional_host_permissions": ["https://*/*"],
+  "background": { "service_worker": "background.js" },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
+  "content_scripts": [
+    {
+      "matches": ["https://x.com/*", "https://www.douyin.com/*", "http://127.0.0.1:4173/*", "http://localhost:4173/*"],
+      "js": ["metrics.js", "platforms.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": { "default_title": "AIP 真实监控采集器", "default_popup": "options.html" }
+}

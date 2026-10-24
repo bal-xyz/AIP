@@ -1,0 +1,21 @@
+{
+  "name": "aip-monitor",
+  "version": "2.0.0",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "check": "node --check server.mjs && node --test",
+    "migrate:dry-run": "node scripts/migrate-state.mjs --dry-run",
+    "migrate": "node scripts/migrate-state.mjs",
+    "backup": "node scripts/backup-db.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "13.0.1"
+  }
+}

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AIP 采集器设置</title>
+  <style>
+    body{font:14px system-ui;background:#10151b;color:#e9eef2;margin:0;min-width:360px}main{padding:20px;display:grid;gap:14px}h1{font-size:18px;margin:0}p{color:#93a0aa;line-height:1.6;margin:0}label{display:grid;gap:6px;color:#b8c2ca}input{padding:10px;border:1px solid #34404a;border-radius:7px;background:#0b0f13;color:#fff}div{display:flex;gap:8px}button{padding:9px 12px;border:1px solid #34404a;border-radius:7px;background:#172029;color:#dbe7ee;cursor:pointer}button:first-child{background:#41a9bd;color:#071014;border-color:#41a9bd}#status{min-height:20px;color:#6fd0b1}
+  </style>
+</head>
+<body><main>
+  <h1>AIP 本地采集器</h1>
+  <p>节点标识必须与服务器签发令牌时返回的标识一致。云端服务必须使用 HTTPS（加密网页协议）。</p>
+  <label>服务地址<input id="serverUrl" placeholder="https://monitor.example.com"></label>
+  <label>节点标识<input id="nodeId"></label>
+  <label>采集令牌<input id="collectorToken" type="password" autocomplete="off"></label>
+  <div><button id="save" type="button">保存并测试</button><button id="run" type="button">立即采集</button></div>
+  <p id="status" role="status"></p>
+</main><script src="options.js"></script></body>
+</html>

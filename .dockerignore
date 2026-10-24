@@ -1,0 +1,6 @@
+node_modules
+data
+audit
+.git
+.env
+*.log

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>AIP 脉冲 · AI 热点情报台</title>
+  <link rel="stylesheet" href="/assets/radar.css?v=20260816-collector-controls2">
+</head>
+<body class="events-view">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="AIP 脉冲首页">
+      <span class="brand-signal" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span><b>AIP 脉冲</b><small>AI SIGNAL DESK</small></span>
+    </a>
+    <nav class="primary-tabs" aria-label="主导航">
+      <button class="active" data-tab="events" type="button">热点</button>
+      <button data-tab="posts" type="button">热帖</button>
+      <button data-tab="following" type="button">关注</button>
+    </nav>
+    <div class="top-actions">
+      <span class="live-state">
+        <i id="liveDot"></i>
+        <span><b id="liveLabel">正在核对数据</b><time id="lastRefreshTime">刷新 —</time></span>
+      </span>
+      <button class="top-icon-action collect-button" id="collectButton" type="button" aria-label="立即采集" data-tooltip="立即采集">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6v5h-5M4 18v-5h5M6.1 9a7 7 0 0 1 11.7-2.6L20 9M4 15l2.2 2.6A7 7 0 0 0 17.9 15"/></svg>
+      </button>
+      <button class="top-icon-action settings-button" id="settingsButton" type="button" aria-label="系统设置" data-tooltip="系统设置">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3v-.2h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+      </button>
+      <button class="top-icon-action queue-corner-button" id="queueButton" data-tab="queue" type="button" aria-label="查看任务队列" data-tooltip="任务队列">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9"/><circle cx="18" cy="18" r="2"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div>
+        <p class="kicker" id="pageKicker">AI EVENT RADAR</p>
+        <h1 id="pageTitle">AI 热点事件</h1>
+        <p class="hero-copy" id="pageDescription">多位独立作者围绕同一具体变化集中发帖，才会进入这里。</p>
+      </div>
+    </section>
+
+    <section class="page-context-bar" id="hotContextBar" aria-label="热帖数据状态" hidden>
+      <div class="page-context-copy"><span>当前范围</span><b id="hotContextSummary">正在整理热帖</b><small id="hotContextUpdated">最近更新 —</small></div>
+      <button class="coverage-inline" id="coverageCard" type="button" hidden>
+        <i aria-hidden="true"></i>
+        <span><b id="coverageValue">核对中</b><small id="coverageDetail">正在读取采集节点</small></span>
+      </button>
+    </section>
+
+    <section class="hot-stats" id="hotStats" aria-label="热帖等级分布" hidden>
+      <div class="hot-stats-total">
+        <span>正式热帖</span>
+        <b id="hotStatsTotal">—</b>
+        <small id="hotAnalysisProgress">一级快评核对中</small>
+      </div>
+      <div class="hot-grade-distribution">
+        <div class="hot-grade-bar" aria-label="T3、T2、T1 等级占比">
+          <button class="grade-segment grade-segment-t3" data-grade-segment="T3" type="button"><span class="sr-only">筛选 T3 现象级</span></button>
+          <button class="grade-segment grade-segment-t2" data-grade-segment="T2" type="button"><span class="sr-only">筛选 T2 爆款</span></button>
+          <button class="grade-segment grade-segment-t1" data-grade-segment="T1" type="button"><span class="sr-only">筛选 T1 小爆</span></button>
+        </div>
+        <div class="hot-grade-legend">
+          <span><i class="legend-t3"></i>T3 现象级 <b id="hotGradeT3">—</b></span>
+          <span><i class="legend-t2"></i>T2 爆款 <b id="hotGradeT2">—</b></span>
+          <span><i class="legend-t1"></i>T1 小爆 <b id="hotGradeT1">—</b></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-context-bar" id="followingContextBar" aria-label="关注动态摘要" hidden>
+      <div class="page-context-copy"><span>监测范围</span><b id="followingContextSummary">正在读取关注动态</b><small id="followingContextUpdated">最近更新 —</small></div>
+      <div class="following-collection-state" id="followingCollectionState" role="status"><i aria-hidden="true"></i><span><b id="followingCollectionLabel">核对中</b><small id="followingCollectionQueue">正在读取采集队列</small></span></div>
+    </section>
+
+    <section class="metric-strip" id="metricStrip" aria-label="当前页面概览" hidden>
+      <article><span id="metricLabel1">热点事件</span><b id="eventCount">—</b><small id="metricDetail1">已达到跨作者门槛</small></article>
+      <article><span id="metricLabel2">正式热帖</span><b id="hotPostCount">—</b><small id="metricDetail2">R 与 M 同时达标</small></article>
+      <article><span id="metricLabel3">关注博主</span><b id="creatorCount">—</b><small id="metricDetail3">当前监控账号</small></article>
+      <article><span id="metricLabel4">待采任务</span><b id="queueCount">—</b><small id="metricDetail4">等待扩展执行</small></article>
+      <article><span id="metricLabel5">证据完整</span><b id="metricValue5">—</b><small id="metricDetail5">指标和历史证据齐全</small></article>
+      <article><span id="metricLabel6">待补证据</span><b id="metricValue6">—</b><small id="metricDetail6">等待采集或复采</small></article>
+    </section>
+
+    <section class="toolbar" id="contentToolbar" aria-label="内容筛选" hidden>
+      <div class="filter-set">
+        <span>平台</span>
+        <select class="toolbar-select" id="platformFilter" aria-label="平台筛选">
+          <option value="all">全部平台</option>
+          <option value="x">X</option>
+          <option value="douyin">抖音</option>
+        </select>
+      </div>
+      <div class="filter-set">
+        <span>等级</span>
+        <select class="toolbar-select" id="gradeFilter" aria-label="等级筛选">
+          <option value="all">全部等级</option>
+          <option value="T3">T3 · 现象级</option>
+          <option value="T2">T2 · 爆款</option>
+          <option value="T1">T1 · 小爆</option>
+        </select>
+      </div>
+      <label class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="搜索事件、作者或正文">
+      </label>
+      <details class="more-filters" id="moreFilters">
+        <summary>更多筛选</summary>
+        <div class="more-filter-panel">
+          <label>证据状态<select id="evidenceFilter"><option value="all">全部证据</option><option value="complete">证据完整</option><option value="partial">部分证据</option><option value="pending">待补证据</option></select></label>
+          <label>一级快评<select id="analysisFilter"><option value="all">全部状态</option><option value="complete">已完成</option><option value="processing">处理中</option><option value="not_started">未运行</option></select></label>
+          <label>动量状态<select id="momentumFilter"><option value="all">全部动量</option><option value="burst">爆发中</option><option value="rising">升温中</option><option value="cooling">冷却中</option><option value="insufficient">快照不足</option></select></label>
+          <label>发布时间<select id="timeFilter"><option value="all">全部时间</option><option value="24h">最近 24 小时</option><option value="7d" selected>最近 7 天</option></select></label>
+        </div>
+      </details>
+    </section>
+
+    <section class="panel active" id="eventsPanel" data-panel="events">
+      <div class="hotspot-canvas">
+        <div class="hotspot-viewport">
+          <div class="graph-overlay" aria-label="关系图控制">
+            <div class="graph-search">
+              <label for="graphSearchInput"><span aria-hidden="true">⌕</span><input id="graphSearchInput" type="search" autocomplete="off" placeholder="搜索热点或作者"></label>
+              <div class="graph-search-results" id="graphSearchResults" role="listbox" hidden></div>
+            </div>
+            <div class="graph-status">
+              <div class="graph-summary-island" id="graphSummaryIsland">
+                <button class="graph-summary-trigger" id="graphSummaryTrigger" type="button" aria-expanded="false" aria-controls="graphSummaryDetails">
+                  <span class="graph-summary-title">今日热点</span>
+                  <strong id="graphSummaryHeadline">0 帖 · 0 热点</strong>
+                </button>
+                <div class="graph-summary-details" id="graphSummaryDetails" hidden>
+                  <div class="graph-summary-row"><span>今日收录帖子</span><b id="graphSummaryPosts">0 条</b></div>
+                  <div class="graph-summary-row"><span>持续热度帖子</span><b id="graphSummaryPersistent">0 条</b></div>
+                  <div class="graph-summary-row"><span>已形成热点</span><b id="graphSummaryHotspots">0 个</b></div>
+                  <div class="graph-summary-row"><span>聚集中事件</span><b id="graphSummaryForming">0 个</b></div>
+                </div>
+              </div>
+              <div class="graph-coverage-island" id="graphCoverageIsland">
+                <button class="graph-coverage" id="graphCoverage" type="button" role="status" aria-label="正在读取今日热点统计"><i aria-hidden="true"></i><span>今日热点</span></button>
+                <div class="graph-coverage-message" id="graphCoverageMessage" hidden>
+                  <span class="graph-coverage-copy">正在读取采集详情</span>
+                  <div class="graph-coverage-actions" aria-label="采集操作">
+                    <button type="button" data-coverage-action="collect">重新采集</button>
+                  </div>
+                </div>
+              </div>
+              <button id="resetGraphView" type="button" hidden>回到热点</button>
+            </div>
+          </div>
+          <div class="graph-hint" id="graphHint">拖动画布 · 滚轮或双指缩放 · 点击节点查看证据</div>
+          <div class="hotspot-graph" id="hotspotGraph"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="postsPanel" data-panel="posts" hidden>
+      <div class="date-stream" id="hotPostStream"></div>
+      <details class="candidate-section pending-evidence-section">
+        <summary><span>待补证据</span><b id="pendingEvidenceCount">0</b><small>数据不完整的内容仍保留，可进入抽屉处理</small></summary>
+        <div class="post-grid" id="pendingEvidenceGrid"></div>
+      </details>
+      <details class="candidate-section">
+        <summary><span>观察候选</span><b id="candidateCount">0</b><small>证据完整，但尚未达到 T1 热度门槛</small></summary>
+        <div class="post-grid" id="candidateGrid"></div>
+      </details>
+    </section>
+
+    <section class="panel" id="followingPanel" data-panel="following" hidden>
+      <div class="following-layout">
+        <aside class="following-creators" aria-label="关注账号">
+          <header>
+            <div><span>关注名单</span><span class="following-list-actions"><b id="followingCreatorCount">0</b><button class="following-add-button" id="addCreatorButton" type="button" aria-label="添加关注" title="添加关注">＋</button></span></div>
+            <small>点击账号查看详情</small>
+          </header>
+          <div class="creator-rail" id="creatorRail"></div>
+        </aside>
+        <section class="following-feed" aria-label="关注动态时间线">
+          <header class="following-feed-heading"><div><span>最新动态</span><b id="followingPostCount">0 条</b></div><small>按时间倒序 · 点击卡片查看完整证据</small></header>
+          <div class="date-stream" id="followingStream"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel" id="queuePanel" data-panel="queue" hidden>
+      <header class="section-heading queue-heading"><p id="queueUpdatedAt">正在读取任务状态</p></header>
+      <div class="queue-summary" id="queueSummary"></div>
+      <div class="queue-type-grid" id="queueTypeGrid" aria-label="六类任务进度"></div>
+      <div class="queue-list" id="queueList"></div>
+    </section>
+
+    <div class="empty-state" id="emptyState" hidden>
+      <span>◌</span>
+      <h2 id="emptyTitle">暂无满足条件的数据</h2>
+      <p id="emptyCopy">系统不会用模拟内容填充；请检查采集节点和覆盖状态。</p>
+    </div>
+  </main>
+
+  <aside class="drawer" id="detailDrawer" aria-hidden="true" aria-label="详情">
+    <div class="drawer-backdrop" data-close-drawer></div>
+    <div class="drawer-sheet">
+      <header><div><span id="drawerEyebrow">情报证据</span><h2 id="drawerTitle">详情</h2></div><button data-close-drawer type="button" aria-label="关闭">×</button></header>
+      <div id="drawerBody" class="drawer-body"></div>
+    </div>
+  </aside>
+
+  <aside class="drawer" id="settingsDrawer" aria-hidden="true" aria-label="系统管理">
+    <div class="drawer-backdrop" data-close-settings></div>
+    <div class="drawer-sheet settings-sheet">
+      <header><div><span>SYSTEM CONTROL</span><h2>设置</h2></div><button data-close-settings type="button" aria-label="关闭">×</button></header>
+      <div class="settings-tabs" role="tablist">
+        <button class="active" data-settings-tab="terms" type="button">监控词</button>
+        <button data-settings-tab="models" type="button">模型接口</button>
+        <button data-settings-tab="collector" type="button">采集管理</button>
+        <button data-settings-tab="notifications" type="button">通知</button>
+      </div>
+      <div class="drawer-body" id="settingsBody"></div>
+    </div>
+  </aside>
+
+  <dialog id="creatorDialog">
+    <form id="creatorForm" method="dialog">
+      <header><div><span>FOLLOW CREATOR</span><h2>添加关注博主</h2></div><button value="cancel" aria-label="关闭">×</button></header>
+      <label>平台<select name="platform"><option value="x">X</option><option value="douyin">抖音</option></select></label>
+      <label>账号或主页地址<input name="handle" required placeholder="@username 或完整主页地址"></label>
+      <label>显示名称<input name="displayName" placeholder="可留空，首次采集后补全"></label>
+      <footer><button value="cancel">取消</button><button class="accent-button" value="default" id="saveCreatorButton">开始关注</button></footer>
+    </form>
+  </dialog>
+
+  <dialog id="loginDialog" class="login-dialog">
+    <form id="loginForm">
+      <header><div><span>SECURE ACCESS</span><h2>登录情报台</h2></div></header>
+      <p>服务器已开启管理员认证。密码只发送到当前服务，不会保存在页面中。</p>
+      <label>管理员密码<input name="password" type="password" autocomplete="current-password" required autofocus></label>
+      <div class="form-error" id="loginError" role="alert"></div>
+      <footer><button class="accent-button" type="submit">登录</button></footer>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="/assets/radar-app.js?v=20260816-collector-controls2"></script>
+</body>
+</html>
